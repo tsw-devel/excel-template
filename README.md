@@ -7,9 +7,9 @@ This software is released under the MIT License, see LICENSE file.
 
 1. Install dependent libraries.  
 ```sh
-pip install chardet
-pip install pandas
-pip install xlrd
+$ pip install chardet
+$ pip install pandas
+$ pip install xlrd
 ```
 
 2. Prepare Excel data and template file.  
@@ -20,7 +20,9 @@ I prepared the following sample.
 
 3. Run excel-template.  
 ```sh
-python excel-template.py template-settings-sample.xlsx
+$ python excel-template.py template-settings-sample.xlsx
+generate OK > gen/add_test.S
+generate OK > gen/sub_test.S
 ```
 The result file is output to the gen directory.
 
@@ -33,5 +35,5 @@ The rule is just the above.
 All data can be substitution data.
 
 # About the format of template
-The substitutions method follows python Template strings.
+The substitutions method follows python Template strings.  
 https://docs.python.org/3/library/string.html#template-strings
