@@ -26,7 +26,7 @@ def get_encoding(path):
 def genrate(excel_file_path, verbose=False):
     error_occur = False
     if not os.path.exists(excel_file_path):
-        print("Not found {}".format(excel_file_path))
+        print('Not found {}'.format(excel_file_path))
         return 1
 
     file = pandas.ExcelFile(excel_file_path, encoding='utf-8')
@@ -35,7 +35,7 @@ def genrate(excel_file_path, verbose=False):
         sheet_dframe = file.parse(sheet_name, convert_float=True)
 
         if verbose:
-            print("[{}]".format(sheet_name))
+            print('[{}]'.format(sheet_name))
 
         if ( not sheet_dframe.to_dict().keys() >= {'output', 'template'}):
             print("{} : Not found required keys('output', 'template')".format(sheet_name))
