@@ -23,7 +23,7 @@ def get_encoding(path):
     return dat['encoding']
 
 
-def genrate(excel_file_path, verbose=False):
+def generate(excel_file_path, verbose=False):
     error_occur = False
     if not os.path.exists(excel_file_path):
         print('Not found {}'.format(excel_file_path))
@@ -95,4 +95,4 @@ def parse():
 
 if __name__ == '__main__':
     result = parse()
-    sys.exit( genrate(result.FILE, result.verbose) )
+    sys.exit( generate(result.FILE, result.verbose) )
