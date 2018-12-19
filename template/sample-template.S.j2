@@ -1,0 +1,29 @@
+/*
+ * テンプレート例(jinja2)
+ */
+.file "{{func_name}}.S"
+.text
+    .align  2
+    .global {{func_name}}
+{{func_name}}:
+    stmfd sp!, {r4-r7, r9, lr}
+
+    # {{Comment}}
+    {% for n in range(op_count) %}
+    {{op1}} {{Rd}} {{Rn}} {{Operand2}}
+    {% endfor %}
+
+    # {{Comment}} #imm
+    {% for imm in imm_data %}
+    {{op1}} {{Rd}} {{Rn}} #{{imm}}
+    {% endfor %}
+
+    ldmfd sp!, {r4-r7, r9, pc}
+
+{% if msg_data_enable %}
+.data
+    .align  2
+msg_data:   .asciz  "This is test message.\n"
+    .align  2 
+msg_size = . - msg_data
+{% endif %}

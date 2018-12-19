@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 import os
 import sys
 import string
+import math
 from argparse import ArgumentParser
+from collections import OrderedDict
 
 import chardet
 import pandas
-
+import jinja2
 
 def get_line_feed_code(path):
     with open(path, mode='rb') as f:
@@ -23,8 +26,13 @@ def get_encoding(path):
     return dat['encoding']
 
 
-def generate(excel_file_path, verbose=False):
+def generate(excel_file_path, is_jinja2=False, verbose=False):
     error_occur = False
+    if is_jinja2:
+        j2env = jinja2.Environment()
+        j2env.trim_blocks = True
+        j2env.lstrip_blocks = True
+
     if not os.path.exists(excel_file_path):
         print('Not found {}'.format(excel_file_path))
         return 1
@@ -45,7 +53,19 @@ def generate(excel_file_path, verbose=False):
             if verbose:
                 print('-' * 64)
                 print(row)
-            settings = row.to_dict()
+
+            settings = row.to_dict(into=OrderedDict)
+            k_prev=""
+            for k in settings.keys():
+                if k.startswith('Unnamed'):
+                    if not isinstance(settings[k_prev], list):
+                        settings[k_prev] = [settings[k_prev]]
+                    if isinstance(settings[k], float) and math.isnan(settings[k]):
+                        continue
+                    settings[k_prev].append(settings[k])
+                else:
+                    k_prev = k
+
             if ( not 'output' in settings):
                 print("{} [{}]: Not found 'output' value".format(sheet_name, i + 1))
                 error_occur = True
@@ -61,10 +81,18 @@ def generate(excel_file_path, verbose=False):
                 encoding = get_encoding(template_path)
                 line_feed_code = get_line_feed_code(template_path)
                 with open(template_path, encoding=encoding) as fr:
-                    tmpl = string.Template(fr.read())
-                    gen = tmpl.safe_substitute(settings)
+                    if is_jinja2:
+                        tmpl = j2env.from_string(fr.read())
+                        gen = tmpl.render(settings)
+                    else:
+                        tmpl = string.Template(fr.read())
+                        gen = tmpl.safe_substitute(settings)
             except (OSError, TypeError):
                 print("{} [{}]: Not found 'template' file".format(sheet_name, i + 1))
+                error_occur = True
+                continue
+            except jinja2.exceptions.TemplateSyntaxError:
+                print('{} [{}]: Jinja2 syntax error'.format(sheet_name, i + 1))
                 error_occur = True
                 continue
 
@@ -84,6 +112,11 @@ def parse():
     argparser = ArgumentParser(description=desc)
     argparser.add_argument('FILE', type=str,
                            help='test data excel file')
+    argparser.add_argument('-j2', '--jinja2',
+                           action='store_const',
+                           const=True,
+                           default=False,
+                           help='select jinja2 template format(default:Template strings)')
     argparser.add_argument('-v', '--verbose',
                            action='store_const',
                            const=True,
@@ -95,4 +128,4 @@ def parse():
 
 if __name__ == '__main__':
     result = parse()
-    sys.exit( generate(result.FILE, result.verbose) )
+    sys.exit( generate(result.FILE, result.jinja2, result.verbose) )
