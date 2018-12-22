@@ -9,6 +9,6 @@ ${func_name}:
     stmfd sp!, {r4-r7, r9, lr}
 
     # ${Comment}
-    ${op1} ${Rd} ${Rn} ${Operand2}
+    ${op1} ${Rd}, ${Rn}, ${Operand2}
 
     ldmfd sp!, {r4-r7, r9, pc} 

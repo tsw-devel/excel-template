@@ -10,12 +10,12 @@
 
     # {{Comment}}
     {% for n in range(op_count) %}
-    {{op1}} {{Rd}} {{Rn}} {{Operand2}}
+    {{op1}} {{Rd}}, {{Rn}}, {{Operand2}}
     {% endfor %}
 
     # {{Comment}} #imm
     {% for imm in imm_data %}
-    {{op1}} {{Rd}} {{Rn}} #{{imm}}
+    {{op1}} {{Rd}}, {{Rn}}, #{{imm}}
     {% endfor %}
 
     ldmfd sp!, {r4-r7, r9, pc}

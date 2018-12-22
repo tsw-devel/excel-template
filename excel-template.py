@@ -111,7 +111,7 @@ def parse():
     desc = 'Simple template engine with Excel as data.'
     argparser = ArgumentParser(description=desc)
     argparser.add_argument('FILE', type=str,
-                           help='test data excel file')
+                           help='template data excel file')
     argparser.add_argument('-j2', '--jinja2',
                            action='store_const',
                            const=True,
