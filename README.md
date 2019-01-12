@@ -42,6 +42,20 @@ The required data is as follows.
 The rule is just the above.  
 All data can be substitution data.
 
+# Attention
+
+In the case of a record including blank data (in this case, id 4) as follows.
+
+| id |  name   | height |
+| -- | ------- | ------ |
+|  1 |  Jack   |   180  |
+|  2 |  Harry  |   185  |
+|  3 |  Emily  |   160  |
+|  4 |  Oliver |        |
+
+Data (in this case, height) of a column containing blank data is handled as a float rather than an integer.  
+That is, the ID1 data will be 180.0 instead of 180.
+
 # About the format of template
 The substitutions method follows Python Template strings and Jinja2.  
 
