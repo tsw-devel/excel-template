@@ -7,29 +7,25 @@ This software is released under the MIT License, see LICENSE file.
 
 1. Install dependent libraries.  
 ```sh
-$ pip install chardet
-$ pip install pandas
-$ pip install xlrd
-$ pip install jinja2
+$ pip install -r requirements.txt
 ```
 
 2. Prepare Excel data and template file.  
 I prepared the following sample.  
-* Template format: Python Template strings  
-  - template-settings-sample.xlsx  
-  - template/sample-template.S
 * Template format: Jinja2  
   - template-settings-sample.j2.xlsx  
   - template/sample-template.S.j2
+* Template format: Python Template strings  
+  - template-settings-sample.xlsx  
+  - template/sample-template.S
 
 3. Run excel-template.  
 ```sh
-$ python excel-template.py template-settings-sample.xlsx
+$ python excel-template.py -j2 template-settings-sample.j2.xlsx 
 generate OK > gen/add_test.S
 generate OK > gen/sub_test.S
-# For the jinja2 sample, it is below.
-# python excel-template.py -j2 template-settings-sample.j2.xlsx
-
+# For the Python Template Strings sample, it is below.
+# python excel-template.py template-settings-sample.xlsx
 ```
 
 The result file is output to the gen directory.
