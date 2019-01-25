@@ -22,6 +22,7 @@ I prepared the following sample.
 3. Run excel-template.  
 ```sh
 $ python excel-template.py -j2 template-settings-sample.j2.xlsx 
+Sheet sample-j2 data model : Found required keys('output', 'template')
 generate OK > gen/add_test.S
 generate OK > gen/sub_test.S
 # For the Python Template Strings sample, it is below.
@@ -35,8 +36,8 @@ The required data is as follows.
 - output ... Output file path  
 - template ... Template file path  
 
+If the above does not exist, that sheet will be skipped.
 The rule is just the above.  
-All data can be substitution data.
 
 # Attention
 
