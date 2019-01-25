@@ -47,8 +47,10 @@ def generate(excel_file_path, is_jinja2=False, verbose=False):
             print('[{}]'.format(sheet_name))
 
         if ( not sheet_dframe.to_dict().keys() >= {'output', 'template'}):
-            print("{} : Not found required keys('output', 'template')".format(sheet_name))
+            print("Sheet {} skip : Not found required keys('output', 'template')".format(sheet_name))
             continue
+        else:
+            print("Sheet {} data model : Found required keys('output', 'template')".format(sheet_name))
 
         for i, row in sheet_dframe.iterrows():
             if verbose:
@@ -88,12 +90,17 @@ def generate(excel_file_path, is_jinja2=False, verbose=False):
                     else:
                         tmpl = string.Template(fr.read())
                         gen = tmpl.safe_substitute(settings)
-            except (OSError, TypeError):
-                print("{} [{}]: Not found 'template' file".format(sheet_name, i + 1))
+            except jinja2.exceptions.TemplateSyntaxError as e:
+                print('{} [{}]: {} {}({}) : {}'.format(
+                    sheet_name, i + 1, e.__class__.__name__, template_path, e.lineno, e.message))
                 error_occur = True
                 continue
-            except jinja2.exceptions.TemplateSyntaxError:
-                print('{} [{}]: Jinja2 syntax error'.format(sheet_name, i + 1))
+            except jinja2.exceptions.TemplateError as e:
+                print('{} [{}]: {} {}'.format(sheet_name, i + 1, e.__class__.__name__, e.message))
+                error_occur = True
+                continue
+            except Exception as e:
+                print('{} [{}]: {} {}'.format(sheet_name, i + 1, e.__class__.__name__, e))
                 error_occur = True
                 continue
 
