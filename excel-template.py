@@ -29,7 +29,8 @@ def get_encoding(path):
 def generate(excel_file_path, is_jinja2=False, verbose=False):
     error_occur = False
     if is_jinja2:
-        j2env = jinja2.Environment()
+        tmpl_loader = jinja2.FileSystemLoader(searchpath='./')
+        j2env = jinja2.Environment(loader=tmpl_loader)
         j2env.trim_blocks = True
         j2env.lstrip_blocks = True
 
