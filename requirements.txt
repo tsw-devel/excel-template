@@ -1,4 +1,4 @@
 chardet
-pandas
+pandas >= 0.24
 xlrd
 jinja2

@@ -38,7 +38,7 @@ def generate(excel_file_path, is_jinja2=False, verbose=False):
         print('Not found {}'.format(excel_file_path))
         return 1
 
-    file = pandas.ExcelFile(excel_file_path, encoding='utf-8')
+    file = pandas.ExcelFile(excel_file_path)
     sheet_names = file.sheet_names
     for sheet_no, sheet_name in enumerate(sheet_names):
         sheet_dframe = file.parse(sheet_name, convert_float=True)
